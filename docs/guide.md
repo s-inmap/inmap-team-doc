@@ -1,6 +1,6 @@
 # 快速上手
 
-> A Vue.js project
+> 构建百度地图canvas图层
 
 
 ## 引入 ss-inmap
