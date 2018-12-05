@@ -13,3 +13,6 @@
 
 ## 下载包文件
 请把包文件下载下来，应用到自己的项目中。[inmap](https://smartdata.b0.upaiyun.com/thinkmark/inmap_grey.min.js ':include :type=code text')
+
+## 文档
+https://s-inmap.github.io/ss-inmap-doc/#/
