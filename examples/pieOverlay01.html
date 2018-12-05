@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PieOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+
+    #allmap {
+        width: 100%;
+        height: 100%;
+    }
+
+    p {
+        margin-left: 5px;
+        font-size: 14px;
+    }
+    .mapJuHe .list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    .mapJuHe .list li {
+        white-space: nowrap;
+        line-height: 22px;
+    }
+    .mapJuHe .list span {}
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="https://smartdata.b0.upaiyun.com/thinkmark/inmap_grey.min.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+let inmap = new inMap.Map({
+    id: 'allmap',
+    skin: "Blueness",
+    center: [116.407395, 39.904211],
+    zoom: {
+        value: 12,
+        show: true,
+        max: 18,
+        min: 5
+    },
+});
+let map = inmap.getMap();
+
+function getOverlayData() {
+
+    let ary = [];
+    let obj = {};
+    obj.value = [302, 500, 608];
+    obj.count = 6;
+    obj.geometry = {
+        'type': 'Point',
+        'coordinates': [String(116.407395), String(39.904211)]
+    };
+    ary.push(obj);
+
+    return ary;
+}
+
+
+let overlay = null;
+
+function initOverlay(ary) {
+    overlay = new inMap.PieOverlay({
+        tooltip: {
+            show: true,
+            formatter: function(params, dom, callback) {
+                // console.log(params, dom)
+                let value0 = params.value[0],
+                    value1 = params.value[1],
+                    value2 = params.value[2];
+
+                return (`
+                <div class="mapJuHe">
+                    <div class="arraw"></div>
+                    <ul class="list">
+                        <li>
+                            <span>蓝色</span>
+                            <span>${value0}</span>
+                        </li>
+                        <li>
+                            <span>紫色</span>
+                            <span>${value1}</span>
+                        </li>
+                        <li>
+                            <span>黄色</span>
+                            <span>${value2}</span>
+                        </li>
+                    </ul>
+                </div>`);
+            },
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        style: {
+            backgroundStyle: {
+                show: true,
+                radius: 24,
+                bgColor: '#fff'
+            },
+            pieStyle: {
+                show: true,
+                radius: 18,
+                strokeWidth: 7,
+                colorList: ['#419BF9', '#A54BFF', '#F8B617', '#FF0000', '#95F0C6'],
+            },
+            textStyle: {
+                show: true,
+                fontSize: 12,
+                fontColor: '#17233D',
+                fontWeight: ''
+            }
+        },
+        data: ary,
+        event: {
+            onState(state) {},
+            onMouseClick: function(item, event) {}
+        }
+    });
+    inmap.add(overlay);
+}
+
+let ary = getOverlayData();
+
+initOverlay(ary);
+</script>

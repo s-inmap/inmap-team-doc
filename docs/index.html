@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+    <style type="text/css">
+    body {
+        color: #495060;
+    }
+    .token.attr-name {
+        color: #e96900;
+    }
+    .token.attr-value {
+        color: #42b983;
+    }
+    .markdown-section {
+        max-width: 100%;
+        padding: 30px 40px 40px;
+    }
+    .markdown-section table {
+        font-family: Consolas, Menlo, Courier, monospace;
+        font-size: 12px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        empty-cells: show;
+        width: 100%;
+        margin-bottom: 24px;
+        display: table;
+    }
+    .markdown-section tr:nth-child(2n) {
+        background-color: #fff;
+    }
+    table td,
+    table th {
+        border: 1px solid #e9e9e9;
+        padding: 8px 16px;
+        text-align: left;
+    }
+    table th {
+        background: #f7f7f7;
+        white-space: nowrap;
+        color: #5c6b77;
+        font-weight: 600;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="//unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="//unpkg.com/docsify-demo-box-vue/dist/docsify-demo-box-vue.min.js"></script>
+    <script>
+    var jsResources = '<scr' + 'ipt src="//unpkg.com/vue/dist/vue.js"></scr' + 'ipt>'
+    var cssResources = '@import url("//cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css");'
+    var bootCode = 'var globalVariable = "leon"'
+    var globalVariable = "leon"
+
+    window.$docsify = {
+        name: 'ss-inmap',
+        nameLink: 'https://github.com/s-inmap/ss-inmap',
+        repo: 'https://github.com/s-inmap/ss-inmap',
+        themeColor: '#2d8cf0',
+        auto2top: true,
+        homepage: 'home.md',
+        loadSidebar: true,
+        alias: {
+            '/.*/_sidebar.md': '/_sidebar.md'
+        },
+        plugins: [
+            DemoBoxVue.create(jsResources, cssResources, bootCode)
+        ]
+    }
+    </script>
+    <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+</body>
+
+</html>

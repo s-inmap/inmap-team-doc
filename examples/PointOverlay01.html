@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PointOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: "微软雅黑";
+    }
+
+    #allmap {
+        width: 100%;
+        height: 100%;
+    }
+
+    p {
+        margin-left: 5px;
+        font-size: 14px;
+    }
+    .inmap-tooltip {
+        position: absolute;
+        opacity: 1;
+        display: none;
+        /* pointer-events: none; */
+        border-style: solid;
+        white-space: nowrap;
+        z-index: 9999999;
+        transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        border-radius: 4px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        font-stretch: normal;
+        font-size: 14px;
+        font-family: sans-serif;
+        line-height: 21px;
+        padding: 5px;
+        left: 323px;
+        top: 451px;
+        border: 0;
+    }
+    .arrow-left .mapLabel .arraw {
+        border: 8px solid transparent;
+        border-right-color: #fff;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        left: -16px;
+        margin-top: 18px;
+    }
+    .arrow-right .mapLabel .arraw {
+        border: 8px solid transparent;
+        border-left-color: #fff;
+        width: 0;
+        height: 0;
+        position: absolute;
+        top: 0;
+        left: 300px;
+        margin-top: 18px;
+    }
+    .mapLabel {
+        background: #fff;
+        position: relative;
+        top: -50px;
+        width: 300px;
+    }
+
+    .mapLabel .header {
+        height: 56px;
+        padding: 0 18px;
+        background: #F8F8F9;
+        border-radius: 2px;
+        border-bottom: 1px solid rgba(23, 35, 61, 0.06);
+    }
+    .mapLabel .header .name {
+        font-size: 14px;
+        line-height: 22px;
+        white-space: nowrap;
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #17233D;
+        padding-top: 6px;
+        padding-right: 18px;
+    }
+    .mapLabel .header .type {
+        font-size: 12px;
+        line-height: 20px;
+        white-space: nowrap;
+        color: rgba(23, 35, 61, 0.55);
+    }
+    .mapLabel .content {
+        padding: 16px;
+    }
+    .mapLabel .content .box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        color: rgba(23, 35, 61, 0.75);
+        border-bottom: 1px solid rgba(23, 35, 61, 0.06);
+        line-height: 28px;
+    }
+    .mapLabel .content .addr {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+    }
+    .mapLabel .content .addr span:last-child {
+        display: block;
+        width: 220px;
+        line-height: 20px;
+        text-align: right;
+        white-space: normal;
+    }
+    .mapLabel .edit {
+        position: absolute;
+        top: 6px;
+        right: 12px;
+        cursor: pointer;
+        font-size: 20px;
+        color: rgba(23, 35, 61, 0.55);
+        width: 20px;
+        height: 20px;
+        background: red;
+    }
+    .mapLabel .edit span {
+        display: none;
+        position: absolute;
+        line-height: 20px;
+        white-space: nowrap;
+        left: 39px;
+        top: 0;
+        font-size: 12px;
+        opacity: 0.9;
+        background: #17233D;
+        color: #fff;
+        width: auto;
+        padding: 4px 8px;
+        border-radius: 2px;
+    }
+    .mapLabel .edit:hover {
+        color: #ccc;
+    }
+    .mapLabel .edit:hover span {
+        display: block;
+    }
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/data3.js"></script>
+    <script src="https://smartdata.b0.upaiyun.com/thinkmark/inmap_grey.min.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+var inmap = new inMap.Map({
+    id: 'allmap',
+    skin: "Blueness",
+    center: [116.407395, 39.904211],
+    zoom: {
+        value: 12,
+        show: true,
+        max: 18,
+        min: 5
+    },
+})
+let points = data.data.storeList;
+points.map(item => {
+    item.count = 6;
+    item.geometry = {
+        "type": "Point",
+        "coordinates": [String(item.lng), String(item.lat)]
+    }
+})
+var overlay = new inMap.PointOverlay({
+    tooltip: {
+        show: true,
+        customClass: 'auto',
+        formatter: function(params, dom, callback) {
+            // console.log(params, dom)
+            let editFn = (e) => {
+                if (e.target.className === 'edit') {
+                    console.log('点击')
+                    callback();
+                    dom.removeEventListener('click', editFn, false);
+                }
+            };
+            dom.addEventListener('click', editFn, false);
+            let message;
+            return (`
+            <div class="mapLabel">
+                <div class="arraw"></div>
+                <div class="edit">
+                    <span>转为研究区域</span>
+                </div>
+                <div class="header">
+                    <div class="name">${params.name}</div>
+                </div>
+                <div class="content">
+                    <div class="box addr">
+                        <span>地址</span>
+                        <span>${params.address}</span>
+                    </div>
+                </div>
+            </div>`);
+        },
+        offsets: {
+            top: 16,
+            left: 12,
+        }
+    },
+    style: {
+        normal: {
+            backgroundColor: 'rgba(200, 200, 50, 1)',
+            borderWidth: 1,
+            borderColor: "rgba(255,255,255,1)",
+            size: 6,
+        },
+    },
+    data: points,
+    event: {
+        onState(state) {},
+        onMouseClick: function(item, event) {}
+    }
+});
+inmap.add(overlay);
+</script>
