@@ -1,4 +1,4 @@
-# RectOverlay图层
+# ImgOverlay图层
 
 ### 概述
 
