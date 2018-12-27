@@ -5,11 +5,9 @@
 百度的聚合能力+inmap的canvas渲染，在文档中引入markerClusterer.js
 
 ``` bash
-<script src="https://smartdata.b0.upaiyun.com/thinkmark/markerClusterer.js"></script>
-
 <script>
 //生成聚合实例
-let markerClusterer = new BMapLib.MarkerClusterer(map, {
+let markerClusterer = new inMap.MarkerClusterer(map, {
     markers: markers,
     gridSize: 50
 });
