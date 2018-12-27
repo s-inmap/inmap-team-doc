@@ -2,21 +2,209 @@
 
 ### 概述
 
-百度的聚合能力+inmap的canvas渲染，在文档中引入markerClusterer.js
+inmap融入了聚合能力的canvas渲染
 
 ``` bash
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+<script src="data/myshop.js"></script>
+<script src="data/paichi.js"></script>
+<script src="data/zengyi.js"></script>
+<script src="https://smartdata.b0.upaiyun.com/thinkmark/inmap_grey.min.js"></script>
 <script>
+let inmap = new inMap.Map({
+    id: 'allmap',
+    skin: "Blueness",
+    center: [116.407395, 39.904211],
+    zoom: {
+        value: 12,
+        show: true,
+        max: 18,
+        min: 5
+    },
+});
+let map = inmap.getMap();
+
+//定义我的门店类型为1，增益品牌为3，排斥品牌为4
+//我的门店数据markers
+let markers = [];
+
+
+function getMyshop() {
+    let points = myshop.data;
+    points.map(item => {
+        let pt = new BMap.Point(item.lng, item.lat);
+        let marker = new BMap.Marker(pt);
+        marker.item = item;
+        marker.type = 1;
+        markers.push(marker);
+    });
+}
+
+//排斥品牌数据markers
+function getPaichi() {
+    let points = paichi.data;
+    points.map(brand => {
+        brand.stores.map(item => {
+            let pt = new BMap.Point(item.lng, item.lat);
+            let marker = new BMap.Marker(pt);
+            marker.item = item;
+            marker.type = 4;
+            markers.push(marker);
+        });
+    });
+}
+
+//增益品牌数据markers
+function getZengyi() {
+    let points = zengyi.data;
+    // console.log(points)
+    points.map(brand => {
+        brand.stores.map(item => {
+            let pt = new BMap.Point(item.lng, item.lat);
+            let marker = new BMap.Marker(pt);
+            marker.item = item;
+            marker.type = 3;
+            markers.push(marker);
+        });
+    });
+}
+
+
+
+function getMarkerClusterer() {
+    let markerClusterer = new inMap.MarkerClusterer(map, {
+        markers: markers,
+        gridSize: 50
+    });
+    return markerClusterer;
+}
+
+function getOverlayData() {
+
+    let result = markerClusterer.getClusters();
+    // console.log(result)
+    let ary = [];
+    result.map((item, index) => {
+        let obj = {};
+        obj.index = index;
+        obj._markers = item._markers;
+        let type1 = 0,
+            type2 = 0,
+            type3 = 0;
+        item._markers.map(x => {
+            if (x.type === 1) {
+                type1 += 1;
+            }
+            if (x.type === 3) {
+                type2 += 1;
+            }
+            if (x.type === 4) {
+                type3 += 1;
+            }
+        });
+        obj.value = [type1, type2, type3];
+        obj.count = 6;
+        obj.geometry = {
+            'type': 'Point',
+            'coordinates': [String(item._center.lng), String(item._center.lat)]
+        };
+        ary.push(obj);
+    });
+    // console.log(ary);
+
+    return ary;
+}
+
+
+let overlay = null;
+
+function initOverlay(ary) {
+    overlay = new inMap.PieOverlay({
+        tooltip: {
+            show: true,
+            formatter: function(params, dom, callback) {
+                // console.log(params, dom)
+                let myshop = params.value[0],
+                    paichi = params.value[1],
+                    zengyi = params.value[2];
+
+                return (`
+                <div class="mapJuHe">
+                    <div class="arraw"></div>
+                    <ul class="list">
+                        <li>
+                            <span>我的门店</span>
+                            <span>${myshop}</span>
+                        </li>
+                        <li>
+                            <span>排斥品牌</span>
+                            <span>${paichi}</span>
+                        </li>
+                        <li>
+                            <span>增益品牌</span>
+                            <span>${zengyi}</span>
+                        </li>
+                    </ul>
+                </div>`);
+            },
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        style: {
+            backgroundStyle: {
+                show: true,
+                radius: 24,
+                bgColor: '#fff'
+            },
+            pieStyle: {
+                show: true,
+                radius: 18,
+                strokeWidth: 7,
+                colorList: ['#419BF9', '#A54BFF', '#F8B617', '#FF0000', '#95F0C6'],
+            },
+            textStyle: {
+                show: true,
+                fontSize: 12,
+                fontColor: '#17233D',
+                fontWeight: ''
+            },
+            cluster: {
+                show: true,
+                gridSize: 50,
+            },
+        },
+        data: ary,
+        event: {
+            onState(state) {},
+            onMouseClick: function(item, event) {}
+        }
+    });
+    inmap.add(overlay);
+}
+
+//组装聚合数据
+getMyshop();
+getPaichi();
+getZengyi();
+// console.log('原始markers集合', markers);
 //生成聚合实例
-let markerClusterer = new inMap.MarkerClusterer(map, {
-    markers: markers,
-    gridSize: 50
+let markerClusterer = getMarkerClusterer();
+// markerClusterer.clearMarkers();
+console.log(markerClusterer.getMarkers())
+//分解聚合结果，生成inmap数据
+let ary = getOverlayData();
+//渲染inmap
+
+initOverlay(ary);
+
+map.addEventListener('zoomend', e => {
+    let ary = getOverlayData();
+    console.log(ary)
+    overlay.setData(ary);
 });
 
-//返回聚合数据
-let result = markerClusterer.getClusters();
-
-//渲染
-overlay.setData(result);
 </script>
 ```
 [实践案例](https://smartdata.b0.upaiyun.com/inmap/examples/pieOverlay.html ':include :type=iframe width=100% height=600px')
