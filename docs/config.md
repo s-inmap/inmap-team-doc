@@ -72,7 +72,7 @@ var styles = {
         onState(state) {}
     }
 }
-
+	
 ```
 
 ### Tooltip对象
