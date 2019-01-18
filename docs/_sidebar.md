@@ -1,9 +1,10 @@
 * [首页](/home)
 * [快速上手](/guide)
-* [增强Tooltip](/tooltip)
+* [增强配置](/config)
 * [实践案例](/case)
 * 文档
 	* [正方形](/RectOverlay)
 	* [环形](/PieOverlay)
 	* [矢量图](/ImgOverlay)
+	* [多边形](/PolygenOverlay)
 	* [聚合](/juhe)
