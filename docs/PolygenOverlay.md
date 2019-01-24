@@ -32,7 +32,7 @@
 
 ### eventOption
 
-| 状态        | 说明   |  类型  |
+| 状态        | 类型   |  说明  |
 | --------   | -----:  | :----:  |
-| onMouseOver(item, event)    | 多边形鼠标悬浮事件。 item:当前悬浮的数据对象。event: 事件对象 |   Function    |
-| onMouseMove(item, event)    | 多边形鼠标移动事件。 item:当前悬浮的数据对象。event: 事件对象 |   Function    |
+| onMouseOver(item, event)    | Function |   多边形鼠标悬浮事件。 item:当前悬浮的数据对象。event: 事件对象    |
+| onMouseMove(item, event)    | Function |   多边形鼠标移动事件。 item:当前悬浮的数据对象。event: 事件对象    |
