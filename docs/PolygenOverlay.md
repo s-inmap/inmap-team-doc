@@ -28,3 +28,15 @@
 | 状态        | 类型   |  说明  |
 | --------   | -----:  | :----:  |
 | borderStyle  | String,Array |   支持字符串类型'dotted'，'dashed',支持数组类型比如：[1,4],第一个参数用于规定第一个虚线的长度。第二个参数用于规定第一个虚线与第二个虚线之间的间隔。    |
+
+
+### eventOption
+
+| 状态        | 说明   |  类型  |
+| --------   | -----:  | :----:  |
+| onMouseOver(item, event)    | 多边形鼠标悬浮事件。 
+item:当前悬浮的数据对象。 
+event: 事件对象 |   Function    |
+| onMouseMove(item, event)    | 多边形鼠标移动事件。 
+item:当前悬浮的数据对象。 
+event: 事件对象 |   Function    |
