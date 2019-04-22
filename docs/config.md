@@ -79,6 +79,67 @@ var styles = {
 
 1.增加Tooltip弹出框边缘智能控制，通过class名称控制箭头arrow-left、arrow-right
 2.增加Tooltip元素绑定事件
+3.增加支持异步函数声明,前提是babel没有转义
+4.增加pormise支持
 
+``` bash
+<!-- 支持异步函数声明 -->
+var styles = {
+    name: '云选',
+    style: {
+        normal: {
+            size: 20.6,
+            padding: 1,
+        }
+    },
+    tooltip: {
+        show: true,
+        async formatter: (params) => {
+            return `
+            <div class="ml_tooltip">
+            </div>
+            `;
+        },
+    },
+    legend: {
+        show: false
+    },
+    event: {
+        onMouseOver(item, e) {},
+        onState(state) {}
+    }
+}
+    
+```
 
+``` bash
+<!-- 支持pormise -->
+var styles = {
+    name: '云选',
+    style: {
+        normal: {
+            size: 20.6,
+            padding: 1,
+        }
+    },
+    tooltip: {
+        show: true,
+        formatter: (params) => {
+            return new Promise((resolve, reject) => {
+                let str = '<div>22</div>'
+
+                resolve(str);
+            });
+        },
+    },
+    legend: {
+        show: false
+    },
+    event: {
+        onMouseOver(item, e) {},
+        onState(state) {}
+    }
+}
+    
+```
 [实践案例](https://smartdata.b0.upaiyun.com/inmap/examples/PointOverlay01.html ':include :type=iframe width=100% height=600px')
