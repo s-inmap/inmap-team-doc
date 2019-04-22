@@ -78,8 +78,11 @@ var styles = {
 ### Tooltip对象
 
 1.增加Tooltip弹出框边缘智能控制，通过class名称控制箭头arrow-left、arrow-right
+
 2.增加Tooltip元素绑定事件
+
 3.增加支持异步函数声明,前提是babel没有转义
+
 4.增加pormise支持
 
 ``` bash
