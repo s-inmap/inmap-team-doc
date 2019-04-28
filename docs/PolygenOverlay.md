@@ -35,4 +35,15 @@
 | 状态        | 类型   |  说明  |
 | --------   | -----:  | :----:  |
 | onMouseOver(item, event)    | Function |   多边形鼠标悬浮事件。 item:当前悬浮的数据对象。event: 事件对象    |
-| onMouseMove(item, event)    | Function |   多边形鼠标移动事件。 item:当前悬浮的数据对象。event: 事件对象    |
+
+| 参数        | 说明   |  类型  |  默认值  |
+| --------   | -----:  | :----:  | :----:  |
+| onMouseOver(item, event)    | Function |   多边形鼠标悬浮事件。 item:当前悬浮的数据对象。event: 事件对象    |     -     |
+| onMouseEnter    | 鼠标进入被选元素时。 
+item:当前鼠标悬浮选中的数据对象。 
+event: 事件对象 
+this: 当前对象 |   Function    |     -     |
+| onMouseLeave    | 鼠标离开被选元素时。 
+item:当前鼠标悬浮选中的数据对象。 
+event: 事件对象 
+this: 当前对象 |   Function    |     -     |

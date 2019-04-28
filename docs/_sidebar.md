@@ -3,8 +3,9 @@
 * [增强配置](/config)
 * [实践案例](/case)
 * 文档
-	* [正方形](/RectOverlay)
-	* [环形](/PieOverlay)
+	* [散点](/PointOverlay)
 	* [矢量图](/ImgOverlay)
 	* [多边形](/PolygenOverlay)
+	* [正方形](/RectOverlay)
+	* [环形](/PieOverlay)
 	* [聚合](/juhe)
