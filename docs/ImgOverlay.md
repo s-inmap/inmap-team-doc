@@ -4,7 +4,7 @@
 
 增加mouseover更换图标
 
-[实践案例](https://smartdata.b0.upaiyun.com/inmap/examples/ImgOverlay-formatter.html ':include :type=iframe width=100% height=600px')
+[实践案例](http://www.wulihub.com.cn/go/JPVkkW/examples/ImgOverlay-formatter.html ':include :type=iframe width=100% height=600px')
 
 
 ### styleOption
