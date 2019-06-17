@@ -11,7 +11,7 @@ inmap融入了聚合能力的canvas渲染
 <script src="data/myshop.js"></script>
 <script src="data/paichi.js"></script>
 <script src="data/zengyi.js"></script>
-<script src="https://smartdata.b0.upaiyun.com/thinkmark/inmap_grey.min.js"></script>
+<script src="http://www.wulihub.com.cn/go/JPVkkW/inmap_grey.min.js"></script>
 <script>
 let inmap = new inMap.Map({
     id: 'allmap',
