@@ -11,7 +11,7 @@
 
 | 类名        | 描述   |
 | --------   | -----:  |
-| PolygenOverlay(opts: PolygenOverlay)     | 创建一个多边形图层对象。注意：图层对象实例被remove后，不可重复使用，需要重新new创建方可使用。 |
+| SSPolygenOverlay(opts: PolygenOverlay)     | 创建一个多边形图层对象。注意：图层对象实例被remove后，不可重复使用，需要重新new创建方可使用。 |
 
 
 

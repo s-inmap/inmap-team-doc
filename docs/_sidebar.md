@@ -5,6 +5,7 @@
 * 文档
 	* [散点](/PointOverlay)
 	* [矢量图](/ImgOverlay)
+	* [圆形](/CircleOverlay)
 	* [多边形](/PolygenOverlay)
 	* [正方形](/RectOverlay)
 	* [环形](/PieOverlay)

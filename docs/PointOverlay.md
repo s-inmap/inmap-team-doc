@@ -1,5 +1,14 @@
 # PointOverlay图层
 
+### 概述
+
+[实践案例](https://competent-morse-8518a5.netlify.com/examples/PointOverlay01.html ':include :type=iframe width=100% height=600px')
+
+### 构造函数
+
+| 类名        | 描述   |
+| --------   | -----:  |
+| SSPointOverlay(opts: PointOverlay)     | 创建一个散点图层对象。注意：图层对象实例被remove后，不可重复使用，需要重新new创建方可使用。 |
 
 ### eventOption
 
