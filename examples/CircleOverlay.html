@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PointOverlayay</title>
+    <title>CircleOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -99,10 +99,13 @@
 <body>
     <div id="allmap"></div>
     <div style="position: absolute;right:0;top:0">
-        <button onclick="showYellow()">显示黄色</button>
-        <button onclick="hideYellow()">隐藏黄色</button>
+        <button onclick="show()">显示Overlay</button>
+        <button onclick="hide()">隐藏Overlay</button>
         <button onclick="showTip()">显示tooltip</button>
         <button onclick="hideTip()">隱藏tooltip</button>
+        <button onclick="showRange()">显示辐射范围</button>
+        <button onclick="hideRange()">隱藏辐射范围</button>
+        <button onclick="changeRange()">更改辐射范围</button>
     </div>
 </body>
 
@@ -120,112 +123,138 @@ var inmap = new inMap.Map({
     },
 })
 var map = inmap.getMap();
-
-function createDotOverlay() {
-    let overlay = new inMap.SSPointOverlay({
-        name: '蓝色圈图',
-        tooltip: {
-            // show:true
-        },
-        style: {
-            normal: {
-                backgroundColor: 'rgba(129, 186, 246, 0.10)',
-                borderColor: "rgba(45, 140, 240, 0.60)",
-                borderWidth: 1,
-                unit: 'm',
-                size: 500
-            },
-        },
-        event: {
-            onState: (state) => {
-                if (state == 3) {}
-            }
-        }
-    });
-    //去掉点击事件
-    overlay._tMouseClick = null;
-    overlay.type = 1;
-    inmap.add(overlay);
-    return overlay;
-}
 let s = 'http://www.wulihub.com.cn/go/JPVkkW/';
 
-function createImgOverlay(type) {
+function createCircleOverlay() {
     let img = new Image();
-    if (type === 1) {
-        img.src = s + 'dot_mine.png';
-    } else {
-        img.src = s + 'dot_pc.png';
-    }
-    var overlay = new inMap.SSImgOverlay({
-        name: '蓝色点图',
+    img.src = s + 'dot_mine.png';
+
+    let hoverImg = new Image();
+    hoverImg.src = s + 'dot_hover.png';
+
+    let overlay = new inMap.CircleOverlay({
+        name: '蓝色圈图',
         tooltip: {
-            show: false,
-            customClass: "imgauto",
-            formatter: function(params) {
-                if (type === 1) {
-                    let message;
-                    if (params.incomeMonthly == '0') {
-                        message = '月流水未上传';
+            show: true,
+            customClass: "img",
+            offsets: {
+                top: -50,
+                left: 12,
+                bottom: 30
+            },
+            async formatter(params, dom) {
+                let arrowBottom = ''
+                setTimeout(() => {
+                    let b = dom.getAttribute('data-bottom');
+                    // console.log(dom, b)
+                    if (b !== null) {
+                        arrowBottom = 'margin-top:' + (b - 20) + 'px';
                     } else {
-                        message = '月流水<em>' + params.incomeMonthly + '</em>元';
+                        arrowBottom = 'margin-top:18px';
                     }
-                    return ('<div class="mapLabel" style="zIndex:999999;"><div class="name">' + params.name + '</div><div class="storeinfo">' + message + '</div><div class="arraw"></div></div>');
+                }, 200)
+
+                let message;
+                if (params.incomeMonthly == '0') {
+                    message = '月流水未上传';
                 } else {
-                    return ('<div class="mapLabel"><div class="name">' + params.name + '</div><div class="arraw"></div></div>');
+                    message = '月流水<em>' + params.incomeMonthly + '</em>元';
                 }
+
+                return (`
+                        <div class="mapLabel">
+                            <div class="arraw" style="${arrowBottom}"></div>
+                            <div class="edit"></div>
+                            <div class="header">
+                                <div class="name">${params.name}</div>
+                                <div class="type">我的门店</div>
+                            </div>
+                            <div class="content">
+                                <div class="box addr">
+                                    <span>地址</span>
+                                    <span>${params.address}</span>
+                                </div>
+                                <div class="box">
+                                    <span>月营业额</span>
+                                    <span>${message}</span>
+                                </div>
+                                <div class="box">
+                                    <span>面积</span>
+                                    <span>${params.area}</span>
+                                </div>
+                                <div class="box">
+                                    <span>租金</span>
+                                    <span>${params.rent}</span>
+                                </div>
+                                <div class="box">
+                                    <span>经营状况</span>
+                                    <span>${params.situation}</span>
+                                </div>
+                            </div>
+                        </div>`);
 
             },
         },
         style: {
             normal: {
+                rangeShow: true,
                 icon: img,
                 width: 24,
                 height: 24,
                 offsets: {
                     top: "-90%",
                     left: "-40%",
-                }
+                },
+                backgroundColor: 'rgba(129, 186, 246, 0.10)',
+                borderColor: "rgba(45, 140, 240, 0.60)",
+                borderWidth: 1,
+                unit: 'm',
+                size: 500
+            },
+            mouseOver: {
+                icon: hoverImg,
+                width: 24,
+                height: 24,
+                offsets: {
+                    top: "-90%",
+                    left: "-40%",
+                },
+                backgroundColor: 'rgba(56,72,195,0)'
             },
         },
         event: {
-            onState: (state) => {
-                // console.log(state)
-                if (state == 3) {}
-            },
-            onMouseClick: function(item, event) {
-                console.log(item);
-                //能获取当前点的信息
-            }
+            onState: (state) => {}
         }
     });
+    //去掉点击事件
+    overlay.type = 'CIRCLEOVERLAY';
     inmap.add(overlay);
+    // overlay.hide()
+    // overlay.setTooltipIsShow(false);
     return overlay;
 }
 
-function showYellow() {
-    console.log('show')
+
+function show() {
+    // console.log('show')
     let list = map.getOverlays();
     let arr = [];
     list.map((overlay, index) => {
-        if (overlay.type === 4) {
+        if (overlay.type === 'CIRCLEOVERLAY') {
             overlay.show();
-            overlay.element.show();
-            overlay._tooltipConfig.show = true;
+            overlay.setTooltipIsShow(true);
         }
     })
 }
 
-function hideYellow() {
-    console.log('hide')
+function hide() {
+    // console.log('hide')
     let list = map.getOverlays();
     let arr = [];
     list.map((overlay, index) => {
-        if (overlay.type === 4) {
-            console.log(overlay)
+        if (overlay.type === 'CIRCLEOVERLAY') {
             overlay.hide();
-            overlay.element.hide();
-            overlay._tooltipConfig.show = false;
+            overlay.setTooltipIsShow(false);
         }
     })
 }
@@ -234,11 +263,8 @@ function showTip() {
     let list = map.getOverlays();
     let arr = [];
     list.map((overlay, index) => {
-        if (overlay.type === 3) {
-
+        if (overlay.type === 'CIRCLEOVERLAY') {
             overlay.setTooltipIsShow(true)
-            console.log(overlay)
-
         }
     })
 }
@@ -247,13 +273,25 @@ function hideTip() {
     let list = map.getOverlays();
     let arr = [];
     list.map((overlay, index) => {
-        if (overlay.type === 3) {
-
-            console.log(overlay)
+        if (overlay.type === 'CIRCLEOVERLAY') {
             overlay.setTooltipIsShow(false)
-
         }
     })
+}
+
+function showRange() {
+    overlay1.setRangeIsShow(true);
+}
+
+function hideRange() {
+    overlay1.setRangeIsShow(false);
+}
+
+function changeRange() {
+    overlay1.setRange({
+        unit: 'm',
+        size: 1000
+    });
 }
 let points1 = data.data.storeList;
 points1.map(item => {
@@ -263,19 +301,9 @@ points1.map(item => {
         "coordinates": [String(item.lng), String(item.lat)]
     }
 })
-let overlay1 = createDotOverlay()
+let overlay1 = createCircleOverlay();
 overlay1.setData(points1);
 overlay1.setZIndex(600);
-
-let overlay = createImgOverlay(1);
-overlay.type = 3;
-overlay.setData(points1);
-
-// console.log('points is ', points1.length)
-overlay.setZIndex(699);
-// console.log('overlay is ', overlay)
-// console.log('map is ', this.inmap)
-
 
 //排斥点
 // let points2 = list.data;
@@ -290,7 +318,7 @@ overlay.setZIndex(699);
 //             "coordinates": [String(item.lng), String(item.lat)]
 //         }
 //     })
-//     let dotoverlay = createDotOverlay()
+//     let dotoverlay = createCircleOverlay()
 //     dotoverlay.setData(oldData);
 //     dotoverlay.setZIndex(600);
 

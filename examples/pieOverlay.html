@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PieOverlay</title>
+    <title>PieOverlayay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -34,12 +34,13 @@
     }
     .mapJuHe .list span {}
     </style>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/district.js"></script>
     <script src="data/myshop.js"></script>
     <script src="data/paichi.js"></script>
     <script src="data/zengyi.js"></script>
-    <script src="hhttp://www.wulihub.com.cn/go/JPVkkW/inmap_grey.min.js"></script>
-    <script src="hhttp://www.wulihub.com.cn/go/JPVkkW/markerClusterer.js"></script>
+    <script src="../dist/inmap.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
 </head>
 
 <body>
@@ -50,7 +51,7 @@
 <script>
 let inmap = new inMap.Map({
     id: 'allmap',
-    skin: "Blueness",
+    skin: "",
     center: [116.407395, 39.904211],
     zoom: {
         value: 12,
@@ -65,6 +66,16 @@ let map = inmap.getMap();
 //我的门店数据markers
 let markers = [];
 
+
+function getDistrict() {
+    let points = district.data;
+    points.map(item => {
+        let pt = new BMap.Point(item.lng, item.lat);
+        let marker = new BMap.Marker(pt);
+        marker.item = item;
+        markers.push(marker);
+    });
+}
 
 function getMyshop() {
     let points = myshop.data;
@@ -107,9 +118,10 @@ function getZengyi() {
 }
 
 
+console.log(inMap)
 
 function getMarkerClusterer() {
-    let markerClusterer = new BMapLib.MarkerClusterer(map, {
+    let markerClusterer = new inMap.MarkerClusterer(map, {
         markers: markers,
         gridSize: 50
     });
@@ -129,15 +141,22 @@ function getOverlayData() {
             type2 = 0,
             type3 = 0;
         item._markers.map(x => {
-            if (x.type === 1) {
-                type1 += 1;
+            console.log(x)
+            if (x.item.gain) {
+                type2 = x.item.gain;
             }
-            if (x.type === 3) {
-                type2 += 1;
+            if (x.item.mystore) {
+                type1 = x.item.mystore;
             }
-            if (x.type === 4) {
-                type3 += 1;
-            }
+            // if (x.type === 1) {
+            //     type1 += 1;
+            // }
+            // if (x.type === 3) {
+            //     type2 += 1;
+            // }
+            // if (x.type === 4) {
+            //     type3 += 1;
+            // }
         });
         obj.value = [type1, type2, type3];
         obj.count = 6;
@@ -155,34 +174,44 @@ function getOverlayData() {
 
 let overlay = null;
 
+function getScore() {
+    return axios({
+        url: '/dist/inmap.min.js',
+    })
+}
+
 function initOverlay(ary) {
     overlay = new inMap.PieOverlay({
         tooltip: {
             show: true,
-            formatter: function(params, dom, callback) {
+            formatter(params, dom, callback) {
                 // console.log(params, dom)
                 let myshop = params.value[0],
                     paichi = params.value[1],
                     zengyi = params.value[2];
-
-                return (`
-                <div class="mapJuHe">
-                    <div class="arraw"></div>
-                    <ul class="list">
-                        <li>
-                            <span>我的门店</span>
-                            <span>${myshop}</span>
-                        </li>
-                        <li>
-                            <span>排斥品牌</span>
-                            <span>${paichi}</span>
-                        </li>
-                        <li>
-                            <span>增益品牌</span>
-                            <span>${zengyi}</span>
-                        </li>
-                    </ul>
-                </div>`);
+                //支持返回promise
+                return new Promise((resolve, reject) => {
+                    let r = getScore(params);
+                    resolve(200);
+                });
+                // return (`
+                // <div class="mapJuHe">
+                //     <div class="arraw"></div>
+                //     <ul class="list">
+                //         <li>
+                //             <span>我的门店</span>
+                //             <span>${myshop}</span>
+                //         </li>
+                //         <li>
+                //             <span>排斥品牌</span>
+                //             <span>${paichi}</span>
+                //         </li>
+                //         <li>
+                //             <span>增益品牌</span>
+                //             <span>${zengyi}</span>
+                //         </li>
+                //     </ul>
+                // </div>`);
             },
             offsets: {
                 top: 5,
@@ -192,13 +221,17 @@ function initOverlay(ary) {
         style: {
             backgroundStyle: {
                 show: true,
-                radius: 24,
-                bgColor: '#fff'
+                radius: 17,
+                bgColor: '#fff',
+                shadowColor: 'rgba(0,0,0,0.14)',
+                shadowBlur: 2,
+                shadowOffsetX: 2,
+                shadowOffsetY: 2,
             },
             pieStyle: {
                 show: true,
-                radius: 18,
-                strokeWidth: 7,
+                radius: 13,
+                strokeWidth: 5,
                 colorList: ['#419BF9', '#A54BFF', '#F8B617', '#FF0000', '#95F0C6'],
             },
             textStyle: {
@@ -222,9 +255,10 @@ function initOverlay(ary) {
 }
 
 //组装聚合数据
-getMyshop();
-getPaichi();
-getZengyi();
+// getMyshop();
+// getPaichi();
+// getZengyi();
+getDistrict();
 // console.log('原始markers集合', markers);
 //生成聚合实例
 let markerClusterer = getMarkerClusterer();

@@ -185,145 +185,17 @@
         left: 0;
         background: #fff;
     }
-
-    .inmap-tooltip {
-        position: absolute;
-        opacity: 1;
-        display: none;
-        /* pointer-events: none; */
-        border-style: solid;
-        white-space: nowrap;
-        z-index: 9999999;
-        transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        border-radius: 4px;
-        font-style: normal;
-        font-variant: normal;
-        font-weight: normal;
-        font-stretch: normal;
-        font-size: 14px;
-        font-family: sans-serif;
-        line-height: 21px;
-        padding: 5px;
-        left: 323px;
-        top: 451px;
-        border: 0;
-    }
-    .arrow-left .mapLabel .arraw {
-        border: 8px solid transparent;
-        border-right-color: #fff;
-        width: 0;
-        height: 0;
-        position: absolute;
-        top: 0;
-        left: -16px;
-        margin-top: 18px;
-    }
-    .arrow-right .mapLabel .arraw {
-        border: 8px solid transparent;
-        border-left-color: #fff;
-        width: 0;
-        height: 0;
-        position: absolute;
-        top: 0;
-        left: 300px;
-        margin-top: 18px;
-    }
-    .mapLabel {
-        background: #fff;
-        position: relative;
-        top: -50px;
-        width: 300px;
-    }
-
-    .mapLabel .header {
-        height: 56px;
-        padding: 0 18px;
-        background: #F8F8F9;
-        border-radius: 2px;
-        border-bottom: 1px solid rgba(23, 35, 61, 0.06);
-    }
-    .mapLabel .header .name {
-        font-size: 14px;
-        line-height: 22px;
-        white-space: nowrap;
-        width: auto;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: #17233D;
-        padding-top: 6px;
-        padding-right: 18px;
-    }
-    .mapLabel .header .type {
-        font-size: 12px;
-        line-height: 20px;
-        white-space: nowrap;
-        color: rgba(23, 35, 61, 0.55);
-    }
-    .mapLabel .content {
-        padding: 16px;
-    }
-    .mapLabel .content .box {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 12px;
-        color: rgba(23, 35, 61, 0.75);
-        border-bottom: 1px solid rgba(23, 35, 61, 0.06);
-        line-height: 28px;
-    }
-    .mapLabel .content .addr {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-    }
-    .mapLabel .content .addr span:last-child {
-        display: block;
-        width: 220px;
-        line-height: 20px;
-        text-align: right;
-        white-space: normal;
-    }
-    .mapLabel .edit {
-        position: absolute;
-        top: 6px;
-        right: 12px;
-        cursor: pointer;
-        font-size: 20px;
-        color: rgba(23, 35, 61, 0.55);
-        width: 20px;
-        height: 20px;
-        background: red;
-    }
-    .mapLabel .edit span {
-        display: none;
-        position: absolute;
-        line-height: 20px;
-        white-space: nowrap;
-        left: 39px;
-        top: 0;
-        font-size: 12px;
-        opacity: 0.9;
-        background: #17233D;
-        color: #fff;
-        width: auto;
-        padding: 4px 8px;
-        border-radius: 2px;
-    }
-    .mapLabel .edit:hover {
-        color: #ccc;
-    }
-    .mapLabel .edit:hover span {
-        display: block;
-    }
     </style>
-    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="https://lib.baomitu.com/vue/2.5.17/vue.min.js"></script>
     <script src="https://unpkg.com/iview@2.14.3/dist/iview.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/iview@2.14.3/dist/styles/iview.css">
     <script src="data/data3.js"></script>
     <script src="data/data4.js"></script>
     <script src="data/data5.js"></script>
-   /inmap_grey.min.js"></script>
+    <script src="../dist/inmap.js"></script>
+    <!-- <script type="text/javascript" src="http://unpkg.com/inmap/dist/inmap.min.js"></script> -->
+    <!-- <script src="https://smartdata.b0.upaiyun.com/thinkmark/inmap_g_v2.min.js"></script> -->
 </head>
 
 <body>
@@ -474,7 +346,8 @@ function createDotOverlay() {
     //     }
     // })
     // console.log(list[325])
-    let overlay = new inMap.PointOverlay({
+    let overlay = new inMap.SSPointOverlay({
+        name: '散点',
         tooltip: {
             show: false,
             customClass: 'point',
@@ -504,23 +377,24 @@ function createDotOverlay() {
     inmap.add(overlay);
     return overlay;
 }
+let s = 'http://www.wulihub.com.cn/go/JPVkkW/';
 
 function createImgOverlay(type) {
     let img = new Image();
     if (type === 1) {
-        img.src = icon = 'http://www.wulihub.com.cn/go/JPVkkW/dot_mine.png';
+        img.src = s + 'dot_mine.png';
     } else {
-        img.src = icon = 'http://www.wulihub.com.cn/go/JPVkkW/dot_pc.png';
+        img.src = s + 'dot_pc.png';
     }
     let hoverImg = new Image();
-    hoverImg.src = icon = 'http://www.wulihub.com.cn/go/JPVkkW/dot_hover.png';
+    hoverImg.src = s + 'dot_hover.png';
 
-    let overlay = new inMap.ImgOverlay({
+    let overlay = new inMap.SSImgOverlay({
+        name: type === 1 ? '我的门店图片' : '排斥图片',
         tooltip: {
             show: true,
             customClass: "auto",
             formatter: function(params, dom) {
-                // console.log(dom, params)
                 if (type === 1) {
 
                     let message;
@@ -595,8 +469,14 @@ function createImgOverlay(type) {
             },
         },
         event: {
-            onState: (state) => {},
-            onMouseClick: function(item, event) {}
+            onState: (state) => {
+                // console.log(state)
+                if (state == 3) {}
+            },
+            onMouseClick: function(item, event) {
+                console.log(item);
+                //能获取当前点的信息
+            }
         }
     });
     inmap.add(overlay);
@@ -638,17 +518,7 @@ function showTip() {
     });
 }
 
-function showR() {
-    removeYellow(imgoverlay);
-    imgoverlay = undefined;
-    paichi(listnew.data);
-}
-//删除黄色点
-function removeYellow(overlay) {
-    overlay.setTooltipIsShow(false);
-    inmap.remove(overlay.element);
-    inmap.remove(overlay);
-}
+
 let dotoverlay1,
     imgoverlay1;
 
@@ -720,7 +590,7 @@ function paichi(data) {
     // imgoverlay.element.hide();
     // imgoverlay.setTooltipIsShow(false);
 }
-paichi(list.data)
+// paichi(list.data)
 
 /*画圆*/
 const drawOption = {
@@ -752,4 +622,19 @@ function drawCircle(point, radius) {
 let point = drawLngLat('116.475959000000003', '39.9216699999999989');
 let circle = drawCircle(point, 500);
 inmap.add(circle);
+
+
+function showR() {
+    removeYellow(imgoverlay);
+    imgoverlay = undefined;
+    paichi(listnew.data);
+}
+//删除黄色点
+function removeYellow(overlay) {
+    if (overlay) {
+        overlay.setTooltipIsShow(false);
+        inmap.remove(overlay.element);
+        inmap.remove(overlay);
+    }
+}
 </script>

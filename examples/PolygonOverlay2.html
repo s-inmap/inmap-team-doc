@@ -25,11 +25,15 @@
     }
     </style>
     <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="http://www.wulihub.com.cn/go/JPVkkW/inmap_grey.min.js"></script>
+    <!-- <script src="./data/geojson.js"></script> -->
+    <script src="../dist/inmap.js"></script>
 </head>
 
 <body>
     <div id="allmap"></div>
+    <div style="position:absolute;right:0;top:0;width:200px;height: 200px;background: #c0c0c0">
+        <div>dsfsdfsfsdfasdf</div>
+    </div>
 </body>
 
 </html>
@@ -856,7 +860,7 @@ var data = [{
     }
 ]
 console.log(Object.prototype.toString.call(data), data)
-var overlay = new inMap.PolygonOverlay({
+var overlay = new inMap.SSPolygonOverlay({
     tooltip: {
         show: true,
         formatter: "{name}"
