@@ -145,4 +145,4 @@ var styles = {
 }
     
 ```
-[实践案例](https://smartdata.b0.upaiyun.com/inmap/examples/PointOverlay01.html ':include :type=iframe width=100% height=600px')
+[实践案例](https://competent-morse-8518a5.netlify.com/examples/PointOverlay01.html ':include :type=iframe width=100% height=600px')

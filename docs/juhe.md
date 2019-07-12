@@ -4,7 +4,7 @@
 
 inmap融入了聚合能力的canvas渲染
 
-[实践案例](http://www.wulihub.com.cn/go/JPVkkW/examples/pieOverlay.html ':include :type=iframe width=100% height=600px')
+[实践案例](https://competent-morse-8518a5.netlify.com/examples/pieOverlay.html ':include :type=iframe width=100% height=600px')
 
 ``` bash
 <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>

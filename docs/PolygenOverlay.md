@@ -4,7 +4,7 @@
 
 多边形的图层。
 
-[实践案例](http://www.wulihub.com.cn/go/JPVkkW/examples/PolygonOverlay2.html ':include :type=iframe width=100% height=600px')
+[实践案例](https://competent-morse-8518a5.netlify.com/examples/PolygonOverlay2.html ':include :type=iframe width=100% height=600px')
 
 
 ### 构造函数
