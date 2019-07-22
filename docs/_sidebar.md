@@ -7,6 +7,7 @@
 	* [矢量图](/ImgOverlay)
 	* [圆形](/CircleOverlay)
 	* [多边形](/PolygenOverlay)
+	* [多边形POI](/PolygenImgOverlay)
 	* [正方形](/RectOverlay)
 	* [环形](/PieOverlay)
 	* [聚合](/juhe)
